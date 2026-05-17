@@ -1,0 +1,491 @@
+
+<!DOCTYPE none>
+<head>
+  <title>WhatsApp Prospector</title>
+</head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --wpp: #25D366;
+  --wpp-dark: #128C7E;
+  --wpp-light: #dcfce7;
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+body-wrapper {
+  display: block;
+}
+
+.app {
+  font-family: 'Space Grotesk', sans-serif;
+  min-height: 520px;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+
+.top-bar {
+  background: var(--wpp);
+  padding: 18px 24px 60px;
+  position: relative;
+}
+
+.top-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wpp-logo-circle {
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.22);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.top-bar-text {
+  flex: 1;
+}
+
+.top-bar-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+
+.top-bar-sub {
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
+  font-weight: 400;
+  margin-top: 1px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.card-main {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: 20px;
+  margin: -36px 16px 0;
+  padding: 24px 20px 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.greeting-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--wpp-light);
+  color: #15803d;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+  letter-spacing: 0.01em;
+}
+
+.greeting-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--wpp);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.field-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: 8px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.flag {
+  position: absolute;
+  left: 14px;
+  font-size: 18px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.phone-input {
+  width: 100%;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border-secondary);
+  padding: 0 14px 0 46px;
+  font-size: 17px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 500;
+  background: var(--color-background-secondary);
+  color: var(--color-text-primary);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.04em;
+}
+
+.phone-input:focus {
+  border-color: var(--wpp);
+  box-shadow: 0 0 0 3px rgba(37,211,102,0.15);
+  background: var(--color-background-primary);
+}
+
+.phone-input::placeholder { color: var(--color-text-secondary); font-weight: 400; font-size: 14px; }
+
+.transform-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  min-height: 36px;
+}
+
+.num-chip {
+  flex: 1;
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: 8px;
+  padding: 7px 10px;
+  text-align: center;
+}
+
+.chip-label {
+  font-size: 10px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.chip-val {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-top: 1px;
+  letter-spacing: 0.02em;
+}
+
+.chip-val.green { color: var(--wpp-dark); }
+
+.arrow-icon {
+  color: var(--color-text-secondary);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.error-msg {
+  font-size: 12px;
+  color: #dc2626;
+  margin-top: 8px;
+  min-height: 16px;
+  font-weight: 500;
+}
+
+.divider {
+  height: 0.5px;
+  background: var(--color-border-tertiary);
+  margin: 18px 0 14px;
+}
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.preview-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.preview-time {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+
+.bubble-wrap {
+  background: #e5f9ed;
+  border-radius: 4px 16px 16px 16px;
+  padding: 12px 14px;
+  position: relative;
+}
+
+.bubble-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--wpp-dark);
+  margin-bottom: 5px;
+}
+
+.bubble-text {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #1a3a26;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.bubble-tail {
+  position: absolute;
+  top: 0;
+  left: -7px;
+  width: 0;
+  height: 0;
+  border-top: 8px solid #e5f9ed;
+  border-left: 8px solid transparent;
+}
+
+.bubble-check {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.check-icon {
+  font-size: 11px;
+  color: #4db86a;
+  font-weight: 500;
+}
+
+.btn-send {
+  width: 100%;
+  height: 52px;
+  border-radius: 14px;
+  border: none;
+  background: var(--wpp);
+  color: #fff;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+  transition: background 0.18s, transform 0.1s, box-shadow 0.18s;
+  letter-spacing: 0.01em;
+}
+
+.btn-send:hover {
+  background: #1ebe5d;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+}
+
+.btn-send:active { transform: scale(0.98); }
+
+.btn-send svg { width: 20px; height: 20px; fill: white; flex-shrink: 0; }
+
+.footer-note {
+  text-align: center;
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-top: 14px;
+  padding: 0 4px;
+  line-height: 1.5;
+}
+
+.footer-note span { color: var(--wpp-dark); font-weight: 600; }
+
+.placeholder-state {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  text-align: center;
+  padding: 16px 0 8px;
+  font-style: italic;
+}
+</style>
+
+
+<div class="app">
+  <div class="top-bar">
+    <div class="top-bar-inner">
+      <div class="wpp-logo-circle">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+      </div>
+      <div class="top-bar-text">
+        <div class="top-bar-title">WhatsApp Prospector</div>
+        <div class="top-bar-sub">Mensagem automática pra clientes</div>
+      </div>
+      <div class="status-dot"></div>
+    </div>
+  </div>
+
+  <div class="card-main">
+    <div class="greeting-pill">
+      <div class="greeting-dot"></div>
+      <span id="greetingPill">Detectando horário...</span>
+    </div>
+
+    <div class="field-label">Número do cliente</div>
+    <div class="input-wrapper">
+      <span class="flag">🇧🇷</span>
+      <input class="phone-input" type="tel" id="phoneInput" placeholder="071 9 9717 1129 (com o zero)" maxlength="20" />
+    </div>
+    <div class="error-msg" id="errorMsg"></div>
+
+    <div class="transform-row" id="transformRow" style="display:none;">
+      <div class="num-chip">
+        <div class="chip-label">Original</div>
+        <div class="chip-val" id="rawNum">—</div>
+      </div>
+      <div class="arrow-icon">→</div>
+      <div class="num-chip">
+        <div class="chip-label">Sem zero</div>
+        <div class="chip-val" id="noZeroNum">—</div>
+      </div>
+      <div class="arrow-icon">→</div>
+      <div class="num-chip">
+        <div class="chip-label">WhatsApp</div>
+        <div class="chip-val green" id="fmtNum">—</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="preview-header">
+      <div class="preview-label">Prévia da mensagem</div>
+      <div class="preview-time" id="previewTime"></div>
+    </div>
+
+    <div id="previewArea">
+      <div class="placeholder-state">Digite um número para ver a mensagem 💬</div>
+    </div>
+
+    <button class="btn-send" id="sendBtn" onclick="openWhatsapp()">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      Abrir no WhatsApp
+    </button>
+
+    <div class="footer-note">
+      O zero é removido automaticamente · Código <span>+55</span> adicionado · Link abre no app
+    </div>
+  </div>
+</div>
+
+<script>
+  const msgBody = `Oi, tudo bem? Vi vocês pelo Google Maps 👏
+Notei que vocês ainda não têm um site com cardápio organizado.
+Eu crio sites simples com botão direto pro WhatsApp pra ajudar a trazer mais clientes.
+Posso te mostrar um exemplo?`;
+
+  function getGreeting() {
+    const h = new Date().getHours();
+    if (h >= 5 && h < 12) return { pill: '☀️  Bom dia detectado', text: 'Bom dia!', time: 'manhã' };
+    if (h >= 12 && h < 18) return { pill: '🌤️  Boa tarde detectado', text: 'Boa tarde!', time: 'tarde' };
+    return { pill: '🌙  Boa noite detectado', text: 'Boa noite!', time: 'noite' };
+  }
+
+  function formatPhone(raw) {
+    let digits = raw.replace(/\D/g, '');
+    if (digits.startsWith('0')) digits = digits.slice(1);
+    if (!digits.startsWith('55')) digits = '55' + digits;
+    return digits;
+  }
+
+  function validate(raw) {
+    let digits = raw.replace(/\D/g, '');
+    if (digits.startsWith('0')) digits = digits.slice(1);
+    return digits.length >= 10 && digits.length <= 13;
+  }
+
+  function getNow() {
+    return new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function update() {
+    const raw = document.getElementById('phoneInput').value.trim();
+    const g = getGreeting();
+    document.getElementById('greetingPill').textContent = g.pill;
+    document.getElementById('previewTime').textContent = getNow();
+
+    if (!raw) {
+      document.getElementById('transformRow').style.display = 'none';
+      document.getElementById('errorMsg').textContent = '';
+      document.getElementById('previewArea').innerHTML = '<div class="placeholder-state">Digite um número para ver a mensagem 💬</div>';
+      return;
+    }
+
+    if (!validate(raw)) {
+      document.getElementById('transformRow').style.display = 'none';
+      document.getElementById('errorMsg').textContent = '⚠ Número inválido. Use DDD + número, ex: 071997171129';
+      document.getElementById('previewArea').innerHTML = '<div class="placeholder-state">Corrija o número para ver a prévia</div>';
+      return;
+    }
+
+    document.getElementById('errorMsg').textContent = '';
+
+    let digits = raw.replace(/\D/g, '');
+    const withoutZero = digits.startsWith('0') ? digits.slice(1) : digits;
+    const full = '55' + withoutZero;
+
+    document.getElementById('rawNum').textContent = digits;
+    document.getElementById('noZeroNum').textContent = withoutZero;
+    document.getElementById('fmtNum').textContent = '+' + full;
+    document.getElementById('transformRow').style.display = 'flex';
+
+    const fullMsg = g.text + ' ' + msgBody;
+
+    document.getElementById('previewArea').innerHTML = `
+      <div class="bubble-wrap">
+        <div class="bubble-tail"></div>
+        <div class="bubble-name">Você</div>
+        <div class="bubble-text">${fullMsg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+        <div class="bubble-check"><span class="check-icon">✓✓ enviado</span></div>
+      </div>`;
+  }
+
+  function openWhatsapp() {
+    const raw = document.getElementById('phoneInput').value.trim();
+    if (!raw || !validate(raw)) {
+      document.getElementById('errorMsg').textContent = '⚠ Digite um número válido antes de enviar.';
+      return;
+    }
+    const g = getGreeting();
+    const fullMsg = g.text + ' ' + msgBody;
+    const phone = formatPhone(raw);
+    const url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(fullMsg);
+    window.open(url, '_blank');
+  }
+
+  document.getElementById('phoneInput').addEventListener('input', update);
+  update();
+  setInterval(() => { document.getElementById('previewTime').textContent = getNow(); }, 30000);
+</script>
